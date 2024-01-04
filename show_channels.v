@@ -22,9 +22,9 @@ module show_channels(
     input clk,
     input resetn,
     input [7:0] channel_addr,             //from DIP switch PIN
-    // input [2:0] channel_addr;
-    output reg [7:0] led                  //Output to LED PIN
-    output reg [2:0] channel_addr_to_SPI; //Output to SPI
+    // input [2:0] channel_addr,
+    output reg [7:0] led,                 //Output to LED PIN
+    output reg [2:0] channel_addr_to_SPI  //Output to SPI
     );
 	
 	reg [2:0] channel_addr_reg; 
