@@ -20,20 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module SPI(clk, sclk, din,dout,cs,dataout);
+module SPI(clk, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg,ready);
 
 input clk;
+input ADC2SPI;
+input wire [2:0] ADD;
+
 output reg din;
 output wire sclk;
-input dout;
 output reg cs;
-output reg [11:0] dataout;
+output reg [11:0] ADC2Sseg;
 
 
 reg [11:0] data_temp;
 reg clock_out;
 
-reg ADD2,ADD1,ADDO;
+
 
 reg [4:0] count;
 
@@ -41,12 +43,10 @@ initial
 begin
 	count = 4'd0;
 	cs = 1;
-	ADD2 = 1;
-	ADD1 = 0;
-	ADDO = 1;
 	clock_out = 0;
-	dataout = 12'd0;
+	ADC2Sseg = 12'd0;
 	data_temp = 12'd0;
+	din = 0;
 end
 
 always@(negedge clk)
@@ -59,14 +59,6 @@ begin
 
 end
 
-always@(posedge clk)
-begin
-	if (count ==16)
-	begin
-		count <= 0;
-	end
-
-end
 
 assign sclk = cs?1:clk; //hardwire SCLK to clk;
 
@@ -74,20 +66,27 @@ assign sclk = cs?1:clk; //hardwire SCLK to clk;
 
 always@(posedge clk)
 begin
-	count <= count + 4'd1;
+	if (count == 16)
+	begin
+		count <= 0;
+	end
+	else
+	begin
+		count <= count + 4'd1;
+	end
 end
 
 always @(negedge clk)
 begin
 	case (count)
 		3: begin
-			din <= ADD2;
+			din <= ADD[2];
 		end
 		4: begin
-			din <= ADD1;
+			din <= ADD[1];
 		end
 		5: begin
-			din <= ADDO;
+			din <= ADD[0];
 		end
 endcase
 end
@@ -95,19 +94,19 @@ end
 always @(posedge clk)
 begin
 	case(count)
-		4:		dataout<=data_temp;
-		5:		data_temp[11]<=dout;
-		6:		data_temp[10]<=dout;
-		7:		data_temp[9]<=dout;
-		8:		data_temp[8]<=dout;
-		9:		data_temp[7]<=dout;
-		10:		data_temp[6]<=dout;
-		11:		data_temp[5]<=dout;
-		12:		data_temp[4]<=dout;
-		13:		data_temp[3]<=dout;
-		14:		data_temp[2]<=dout;
-		15:		data_temp[1]<=dout;
-		16:		data_temp[0]<=dout;
+		4:		ADC2Sseg<=data_temp;
+		5:		data_temp[11]<=ADC2SPI;
+		6:		data_temp[10]<=ADC2SPI;
+		7:		data_temp[9]<=ADC2SPI;
+		8:		data_temp[8]<=ADC2SPI;
+		9:		data_temp[7]<=ADC2SPI;
+		10:		data_temp[6]<=ADC2SPI;
+		11:		data_temp[5]<=ADC2SPI;
+		12:		data_temp[4]<=ADC2SPI;
+		13:		data_temp[3]<=ADC2SPI;
+		14:		data_temp[2]<=ADC2SPI;
+		15:		data_temp[1]<=ADC2SPI;
+		16:		data_temp[0]<=ADC2SPI;
 		
 	endcase
 

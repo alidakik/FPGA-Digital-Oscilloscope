@@ -1,12 +1,12 @@
-mescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer:
 //
-// Create Date:   18:34:09 01/03/2024
+// Create Date:   15:43:04 01/04/2024
 // Design Name:   SPI
-// Module Name:   C:/Users/vboxuser/FPGA/Project_1/tf_SPI.v
+// Module Name:   C:/Users/vboxuser/FPGA/Project_1/tf_spi.v
 // Project Name:  Project_1
 // Target Device:  
 // Tool versions:  
@@ -22,17 +22,19 @@ mescale 1ns / 1ps
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module tf_SPI;
+module tf_spi;
 
 	// Inputs
 	reg clk;
-	reg dout;
+	reg [2:0] ADD;
+	reg ADC2SPI;
 
 	// Outputs
 	wire sclk;
 	wire din;
 	wire cs;
-	wire [11:0] dataout;
+	wire [11:0] ADC2Sseg;
+
 
 	reg [3:0] i = 0;
 	reg [11:0] word = 12'b101011000101;
@@ -41,51 +43,50 @@ module tf_SPI;
 		.clk(clk), 
 		.sclk(sclk), 
 		.din(din), 
-		.dout(dout), 
 		.cs(cs), 
-		.dataout(dataout)
+		.ADD(ADD), 
+		.ADC2SPI(ADC2SPI), 
+		.ADC2Sseg(ADC2Sseg)
 	);
 
 	initial begin
 		// Initialize Inputs
 		clk = 0;
-		dout = 0;
+		ADD = 0;
+		ADC2SPI = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-		repeat(160)
+      repeat(160)
 		begin
-		//i<=0;
-		repeat(16)
-		//always @(posedge clk)
-		begin
-			//if(i==16)
-		//	begin
-				//	i<=0;
-			//end
-			
-			if(i<4)
+		ADD[0] = 1;
+		ADD[1] = 0;
+		ADD[2] = 1;
+			repeat(16)
 			begin
-				dout<=0;
+				
+				if(i<4)
+				begin
+					ADC2SPI<=0;
+				end
+				
+				else
+				begin
+					ADC2SPI<=word[15-i];
+				end
+				i <= i+1;
+				
+				#100;
 			end
-			
-			else
-			begin
-				dout<=word[15-i];
-			end
-			i <= i+1;
-			
-			#100;
 		end
-		end
-       
+		  
+		
 		// Add stimulus here
 
 	end
+      
 	
 	always #(50) clk<=~clk;
-	
-      
-endmodule
 
+endmodule
 
