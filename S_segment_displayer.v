@@ -18,7 +18,7 @@ mescale 1ns / 1ps
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module S-segment-displayer(en,svn_conf,DP,data,clk_16M);
+module S_segment_displayer(en,svn_conf,DP,data,clk_16M);
 
 output reg [3:0]en;
 output reg [6:0]svn_conf;
