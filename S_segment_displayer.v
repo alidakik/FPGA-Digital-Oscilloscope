@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+mescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: IUT_FPGA_Class
 // Engineer: A.Dakik
@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module S_segment_displayer(en,svn_conf,DP,data,clk
+module S_segment_displayer(en,svn_conf,DP,intege_data,float1_data,float2_data,clk
     );
 	
 output reg [3:0]en;
@@ -26,11 +26,21 @@ output reg [6:0]svn_conf;
 output reg DP;
  
 input wire clk;
-input wire [12:0] data;
+
+input wire [3:0] integer_data;
+input wire [3:0] float1_data;
+input wire [3:0] float2_data;
 
 reg [15:0] count=16'b0;
 reg [1:0] count2=3'b0;
 reg [3:0] data_in=4'b0;
+
+reg [22:0] timer = 0;	// to display data every 0.5 seconds
+input reg [3:0] integer_data_reg;
+input reg [3:0] float1_data_reg;
+input reg [3:0] float2_data_reg;
+
+
 
 always @ (posedge clk)
 begin
@@ -46,11 +56,25 @@ begin
 		end
 	end
 
+always @(posedge clk)
+begin
+	if(timer<23'h5B8D80)
+		timer <= timer + 1;
+	else
+		begin
+			integer_data_reg <= integer_data;
+			float1_data_reg <= float1_data;
+			float2_data_reg <= float2_data;
+		end
+
+
+end
+
 	
 always @ (count2 or data)
 begin
- 	{en,data_in}<=(count2==2'b0)?{4'b1110,data[3:0]}:(count2==2'b01)?{4'b1101,data[7:4]}
-	:(count2==2'b10)?{4'b1011,data[11:8]}:{4'b1111,4'b0};
+ 	{en,data_in}<=(count2==2'b0)?{4'b1110,float2_data_reg}:(count2==2'b01)?{4'b1101,float1_data_reg}
+	:(count2==2'b10)?{4'b1011,integer_data_reg}:{4'b1111,4'b0};
 	end
 	
 always @(count2)
