@@ -39,14 +39,17 @@ reg clock_out;
 
 reg [4:0] count;
 
-initial
+always @(posedge clk)
 begin
-	count = 4'd0;
-	cs = 1;
-	clock_out = 0;
-	ADC2Sseg = 12'd0;
-	data_temp = 12'd0;
-	din = 0;
+	if (Resetn == 0)
+	begin
+		count <= 4'd0;
+		cs <= 1;
+		clock_out <= 0;
+		ADC2Sseg <= 12'd0;
+		data_temp <= 12'd0;
+		din <= 0;
+	end
 end
 
 always@(negedge clk)
@@ -57,10 +60,7 @@ begin
 	end
 end
 
-
 assign sclk = cs ? 1 : clk_noBuff;  //hardwire SCLK to clk;
-
-
 
 always@(posedge clk)
 begin
@@ -94,19 +94,19 @@ end
 always @(posedge clk)
 begin
 	case(count)
-		4:			ADC2Sseg<=data_temp;
-		5:			data_temp[11:11]<=ADC2SPI;
-		6:			data_temp[10:10]<=ADC2SPI;
-		7:			data_temp[9:9]<=ADC2SPI;
-		8:			data_temp[8:8]<=ADC2SPI;
-		9:			data_temp[7:7]<=ADC2SPI;
-		10:		data_temp[6:6]<=ADC2SPI;
-		11:		data_temp[5:5]<=ADC2SPI;
-		12:		data_temp[4:4]<=ADC2SPI;
-		13:		data_temp[3:3]<=ADC2SPI;
-		14:		data_temp[2:2]<=ADC2SPI;
-		15:		data_temp[1:1]<=ADC2SPI;
-		16:		data_temp[0:0]<=ADC2SPI;
+		4:		ADC2Sseg<=data_temp;
+		5:		data_temp[11:11] <=  ADC2SPI;
+		6:		data_temp[10:10] <=  ADC2SPI;
+		7:		data_temp[9:9]   <=  ADC2SPI;
+		8:		data_temp[8:8]   <=  ADC2SPI;
+		9:		data_temp[7:7]   <=  ADC2SPI;
+		10:		data_temp[6:6]   <=  ADC2SPI;
+		11:		data_temp[5:5]   <=  ADC2SPI;
+		12:		data_temp[4:4]   <=  ADC2SPI;
+		13:		data_temp[3:3]   <=  ADC2SPI;
+		14:		data_temp[2:2]   <=  ADC2SPI;
+		15:		data_temp[1:1]   <=  ADC2SPI;
+		16:		data_temp[0:0]   <=  ADC2SPI;
 		
 	endcase
 
