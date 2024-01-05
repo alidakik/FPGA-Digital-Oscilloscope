@@ -36,9 +36,9 @@ reg [1:0] count2=3'b0;
 reg [3:0] data_in=4'b0;
 
 reg [22:0] timer = 0;	// to display data every 0.5 seconds
-input reg [3:0] integer_data_reg;
-input reg [3:0] float1_data_reg;
-input reg [3:0] float2_data_reg;
+reg [3:0] integer_data_reg;
+reg [3:0] float1_data_reg;
+reg [3:0] float2_data_reg;
 
 
 
