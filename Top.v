@@ -49,7 +49,12 @@ module Top(
 	wire locked_wire;
 	wire Resetn;
 	
+	wire [3:0] integer_data;
+	wire [3:0] float1_data;
+	wire [3:0] float2_data;
+	
 	assign led_dcm_locked = locked_wire;
+	
 	
 	
 	//DONE
@@ -89,11 +94,13 @@ module Top(
 
 	//DONE
 	S_segment_displayer sseg_displayer (
-    .en(sseg_En),           // OUT
-    .svn_conf(sseg[7:1]),   // OUT
-    .DP(sseg[0]),           // OUT
-    .data(ADC2Sseg), 	    // IN
-    .clk(Clk_12)            // IN
+    .en(sseg_En),           		// OUT
+    .svn_conf(sseg[7:1]),   		// OUT
+    .DP(sseg[0]),           		// OUT
+	 .integer_data(integer_data),	// IN
+	 .float1_data(float1_data),	// IN
+	 .float2_data(float2_data),	// IN
+    .clk(Clk_12)            		// IN
     );
 	
 	//DONE
@@ -104,6 +111,16 @@ module Top(
     .led(LED),                   // OUT
     .channel_addr_to_SPI(ADDR)   // OUT
     );
-// Reset MAnager
+	 
+	
+	//DONE
+	voltage_calculater(
+	 .clk(Clk_12),						 // IN
+	 .ADC_data(ADC2Sseg),	       // IN
+	 .integer_data(integer_data),	 // OUT
+	 .float1_data(float1_data),	 // OUT
+	 .float2_data(float2_data)     // OUT
+	 );
+	 
 
 endmodule
