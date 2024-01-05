@@ -34,9 +34,9 @@ module voltage_calculater(
 	always @(posedge clk) begin
         voltage = (ADC_data*5000) >> 12; 
 		  
-		  integer_data = voltage >> 10; // voltage / 1000
-		  float1_data = voltage & (10'b1111111111) >> 7; // voltage % 1000 / 100
-		  float2_data = voltage & (4'b1111) >> 3; //voltage % 100 / 10;
+		  integer_data <= voltage >> 10; // voltage / 1000
+		  float1_data <= voltage & (10'b1111111111) >> 7; // voltage % 1000 / 100
+		  float2_data <= voltage & (4'b1111) >> 3; //voltage % 100 / 10;
     end
 	
 	
