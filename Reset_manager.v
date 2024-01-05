@@ -26,8 +26,6 @@ module Reset_manager(
 	output reg Resetn      // System stable synchronous Reset 
     );
 
-   wire LOCKED;
-
 // Generate the internal reset - it is asserted whenever the reset pin
 // is asserted, or the DCM is not locked
 wire internal_rst_En ;
