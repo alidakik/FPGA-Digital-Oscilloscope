@@ -24,11 +24,11 @@ module show_channels(
     input [7:0] channel_addr,              //from DIP switch PIN
     // input [2:0] channel_addr,
     output reg  [7:0] led,                 //Output to LED PIN
-    output [2:0] channel_addr_to_SPI       //Output to SPI
+    output reg [2:0] channel_addr_to_SPI       //Output to SPI
     );
 	
 	reg [2:0] channel_addr_reg; 
-	
+
 	always@(posedge clk)
 	begin
 		if(!resetn)
@@ -42,9 +42,10 @@ module show_channels(
 	end
 
     // ----- Send channel address to SPI -----
-    assign channel_addr_to_SPI[0:0] = channel_addr_reg[0:0];
-    assign channel_addr_to_SPI[1:1] = channel_addr_reg[1:1];
-    assign channel_addr_to_SPI[2:2] = channel_addr_reg[2:2];
+    always @(posedge clk)
+    begin
+        channel_addr_to_SPI <= channel_addr_reg;
+    end
 
     // ----- Send channel address to LED -----
 	 
