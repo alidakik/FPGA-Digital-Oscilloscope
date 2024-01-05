@@ -44,7 +44,7 @@ module show_channels(
     // ----- Send channel address to SPI -----
     always @(posedge clk)
     begin
-         case(channel_addr_reg):
+         case(channel_addr_reg)
             8'b00000001: channel_addr_to_SPI <= 3'b000;
             8'b00000010: channel_addr_to_SPI <= 3'b001;
             8'b00000100: channel_addr_to_SPI <= 3'b010;
@@ -54,6 +54,7 @@ module show_channels(
             8'b01000000: channel_addr_to_SPI <= 3'b110;
             8'b10000000: channel_addr_to_SPI <= 3'b111;
             default: channel_addr_to_SPI <= 3'b000;
+    endcase
     end
 
     // ----- Send channel address to LED -----
