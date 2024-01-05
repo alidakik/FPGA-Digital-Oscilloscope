@@ -18,9 +18,11 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module SPI(clk, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg,ready);
+module SPI(clk, clk_noBuff, Resetn, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg);
 
 input clk;
+input clk_noBuff;
+input Resetn;
 input ADC2SPI;
 input wire [2:0] ADD;
 
@@ -56,7 +58,7 @@ begin
 end
 
 
-assign sclk = cs?1:clk; //hardwire SCLK to clk;
+assign sclk = cs ? 1 : clk_noBuff;  //hardwire SCLK to clk;
 
 
 
@@ -92,19 +94,19 @@ end
 always @(posedge clk)
 begin
 	case(count)
-		4:		ADC2Sseg<=data_temp;
-		5:		data_temp[11]<=ADC2SPI;
-		6:		data_temp[10]<=ADC2SPI;
-		7:		data_temp[9]<=ADC2SPI;
-		8:		data_temp[8]<=ADC2SPI;
-		9:		data_temp[7]<=ADC2SPI;
-		10:		data_temp[6]<=ADC2SPI;
-		11:		data_temp[5]<=ADC2SPI;
-		12:		data_temp[4]<=ADC2SPI;
-		13:		data_temp[3]<=ADC2SPI;
-		14:		data_temp[2]<=ADC2SPI;
-		15:		data_temp[1]<=ADC2SPI;
-		16:		data_temp[0]<=ADC2SPI;
+		4:			ADC2Sseg<=data_temp;
+		5:			data_temp[11:11]<=ADC2SPI;
+		6:			data_temp[10:10]<=ADC2SPI;
+		7:			data_temp[9:9]<=ADC2SPI;
+		8:			data_temp[8:8]<=ADC2SPI;
+		9:			data_temp[7:7]<=ADC2SPI;
+		10:		data_temp[6:6]<=ADC2SPI;
+		11:		data_temp[5:5]<=ADC2SPI;
+		12:		data_temp[4:4]<=ADC2SPI;
+		13:		data_temp[3:3]<=ADC2SPI;
+		14:		data_temp[2:2]<=ADC2SPI;
+		15:		data_temp[1:1]<=ADC2SPI;
+		16:		data_temp[0:0]<=ADC2SPI;
 		
 	endcase
 
