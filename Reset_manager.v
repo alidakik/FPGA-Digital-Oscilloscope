@@ -42,7 +42,7 @@ reg     rst_meta;        // After sampling the async rst, this has
 
 always @(posedge  clk_i or posedge internal_rst_En)
   begin
-    if (internal_rst_En == 1)
+    if (internal_rst_En == 0)
     begin
       rst_meta <= 1'b1;
       Resetn  <= 1'b1;
