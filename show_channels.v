@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: IUT_FPGA_Class
+// Engineer: M.Azarbayejani
 // 
 // Create Date:    10:54:11 01/04/2024 
 // Design Name: 

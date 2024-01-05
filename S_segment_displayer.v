@@ -1,11 +1,11 @@
-mescale 1ns / 1ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: IUT_FPGA_Class
+// Engineer: A.Dakik
 // 
-// Create Date:    13:58:49 01/04/2024 
+// Create Date:    16:15:22 01/04/2024 
 // Design Name: 
-// Module Name:    S-segment-displayer 
+// Module Name:    S_segment_displayer 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,24 +18,21 @@ mescale 1ns / 1ps
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module S_segment_displayer(en,svn_conf,DP,data,clk_16M);
-
+module S_segment_displayer(en,svn_conf,DP,data,clk
+    );
+	
 output reg [3:0]en;
 output reg [6:0]svn_conf;
 output reg DP;
  
-input wire clk_16M;
+input wire clk;
 input wire [12:0] data;
-
 
 reg [15:0] count=16'b0;
 reg [1:0] count2=3'b0;
 reg [3:0] data_in=4'b0;
 
-
-
-always @ (posedge clk_16M)
- 
+always @ (posedge clk)
 begin
 	if(count<16'hbb80)
 		count<=count+16'b1;
@@ -48,6 +45,7 @@ begin
 			count2<=2'b0;
 		end
 	end
+
 	
 always @ (count2 or data)
 begin
@@ -65,8 +63,8 @@ begin
 	begin
 		DP = 0;
 	end
-
 end
+
 
 always @ ( data_in )
 begin
@@ -91,8 +89,5 @@ begin
 	endcase
 end
  
+
 endmodule
-
-
-
-

@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: IUT_FPGA_Class
+// Engineer: A.Dakik - M.Azarbayejani
 // 
-// Create Date:    17:21:21 01/03/2024 
+// Create Date:    16:14:19 01/04/2024 
 // Design Name: 
-// Module Name:    spi 
+// Module Name:    SPI 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,8 +18,6 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-
-
 module SPI(clk, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg,ready);
 
 input clk;
@@ -55,8 +53,6 @@ begin
 	begin
 		cs <= 0;
 	end
-	
-
 end
 
 
@@ -76,6 +72,7 @@ begin
 	end
 end
 
+
 always @(negedge clk)
 begin
 	case (count)
@@ -90,6 +87,7 @@ begin
 		end
 endcase
 end
+
 
 always @(posedge clk)
 begin
