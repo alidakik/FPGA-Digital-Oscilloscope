@@ -1,4 +1,4 @@
-mescale 1ns / 1ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: IUT_FPGA_Class
 // Engineer: A.Dakik
@@ -56,6 +56,7 @@ begin
 		end
 	end
 
+
 always @(posedge clk)
 begin
 	if(timer<23'h5B8D80)
@@ -71,7 +72,7 @@ begin
 end
 
 	
-always @ (count2 or data)
+always @ (count2 or timer)
 begin
  	{en,data_in}<=(count2==2'b0)?{4'b1110,float2_data_reg}:(count2==2'b01)?{4'b1101,float1_data_reg}
 	:(count2==2'b10)?{4'b1011,integer_data_reg}:{4'b1111,4'b0};
@@ -79,7 +80,7 @@ begin
 	
 always @(count2)
 begin
-	if(count2==2'b01)
+	if(count2==2'b10)
 	begin
 		DP = 1;
 	end
