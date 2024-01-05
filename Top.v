@@ -27,7 +27,6 @@ module Top(
 		output Fpga2Adc_data,
 		output Fpga2Adc_Csn,
 		output Fpga2Adc_sclk,
-		output sclk,
 		
 		//--- 7-segment --- 
 		output [7:0] sseg,
@@ -77,15 +76,15 @@ module Top(
 
 	 //DONE
 	 SPI spi (
-    .clk(Clk_12),              // IN
-    .clk_noBuff(Clk_12_noBuff),// IN
+    .clk(Clk_12),               // IN
+    .clk_noBuff(Clk_12_noBuff), // IN
 	 .Resetn(Resetn),           // IN
 	 .sclk(Fpga2Adc_sclk), 	    // OUT
-    .din(Fpga2Adc_data),       // OUT
-    .cs(Fpga2Adc_Csn),         // OUT
-    .ADD(ADDR),                // IN
-    .ADC2SPI(Adc2Fpga_data),   // IN
-    .ADC2Sseg(ADC2Sseg)        // OUT
+    .din(Fpga2Adc_data),        // OUT
+    .cs(Fpga2Adc_Csn),          // OUT
+    .ADD(ADDR),                 // IN
+    .ADC2SPI(Adc2Fpga_data),    // IN
+    .ADC2Sseg(ADC2Sseg)         // OUT
     );
 
 	//DONE
@@ -93,7 +92,7 @@ module Top(
     .en(sseg_En),           // OUT
     .svn_conf(sseg[7:1]),   // OUT
     .DP(sseg[0]),           // OUT
-    .data(ADC2Sseg), 		 // IN
+    .data(ADC2Sseg), 	    // IN
     .clk(Clk_12)            // IN
     );
 	
