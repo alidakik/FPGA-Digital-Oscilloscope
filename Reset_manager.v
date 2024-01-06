@@ -38,7 +38,7 @@ reg     rst_meta;        // After sampling the async rst, this has
                          // a much lower probability of being
                          // metastable
 
-always @(posedge  clk_i or posedge internal_rst_En)
+always @(posedge  clk_i )
   begin
     if (internal_rst_En == 0)
     begin

@@ -9,7 +9,7 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: A module that is responsable to communicate with the ADC hardware using SPI protocol
 //
 // Dependencies: 
 //
@@ -18,41 +18,65 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module SPI(clk, clk_noBuff, Resetn, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg);
+module SPI(clk, clk_noBuff, Resetn, sclk, din,cs,ADD,ADC2SPI,ADC2Sseg, start);
 
-input clk;
-input clk_noBuff;
-input Resetn;
-input ADC2SPI;
-input wire [2:0] ADD;
+input clk;								// 12 mg clk
+input clk_noBuff;						// 12 mg clk without a buffer
+input Resetn;							// reset flag
+input ADC2SPI;							// data comming from ADC hardware
+input  [2:0] ADD;						// data to be send to the ADC to controll the input channel
+input  start;							// start the communication when the clock is locked and ready
 
-output reg din;
-output wire sclk;
-output reg cs;
-output reg [11:0] ADC2Sseg;
-
-
-reg [11:0] data_temp;
-reg clock_out;
+output reg din;						// the bridge to send data to ADC hardware
+output wire sclk;						// the clk to sync the communaction betwee the this module and the ADC hardware
+output reg cs;							// active low chip select to start sending and recieving data
+output reg [11:0] ADC2Sseg;		// outputing the the seriel data that we got from the ADC parrarelly
 
 
+reg [11:0] data_temp;				// a temp to latch the data so we update the output every 16 clock
+reg start_reg;							// registering the start
 
-reg [4:0] count;
 
+reg [4:0] count;						// a counter to keep track of the timing of the communication
+
+
+// initializing the data
+initial begin
+	cs<=1;
+	count <= 4'd0;
+	ADC2Sseg <= 12'd0;
+	data_temp <= 12'd0;
+end
+
+
+// starting the protocol
 always @(posedge clk)
 begin
-	if (Resetn == 0)
+	if(start==1)
 	begin
-		count <= 4'd0;
-		cs <= 1;
-		clock_out <= 0;
-		ADC2Sseg <= 12'd0;
-		data_temp <= 12'd0;
-		din <= 0;
+		start_reg<=1;
 	end
 end
 
-always@(negedge clk)
+
+
+
+// reseting
+always @(posedge clk, posedge Resetn)
+begin
+	if (Resetn)
+	begin
+		//count <= 4'd0;
+		//cs <= 1;
+		//ADC2Sseg <= 12'd0;
+		//data_temp <= 12'd0;
+		//din <= 0;
+	end
+end
+
+
+// starting the communcation with the ADC hardware
+always@(posedge clk)
 begin
 	if (count == 1)
 	begin
@@ -60,13 +84,16 @@ begin
 	end
 end
 
+// creating the clock to sync the ADC hardware when the cs is ready
 assign sclk = cs ? 1 : clk_noBuff;  //hardwire SCLK to clk;
 
+
+// updating the count to keep track of time
 always@(posedge clk)
 begin
 	if (count == 16)
 	begin
-		count <= 0;
+		count <= 1;
 	end
 	else
 	begin
@@ -74,7 +101,7 @@ begin
 	end
 end
 
-
+// sending data serially at the clock we found according to the ADC datasheet
 always @(negedge clk)
 begin
 	case (count)
@@ -91,6 +118,7 @@ endcase
 end
 
 
+// recieving data serially at the clock we found according to the ADC datasheet
 always @(posedge clk)
 begin
 	case(count)

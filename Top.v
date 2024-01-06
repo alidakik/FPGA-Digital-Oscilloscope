@@ -1,15 +1,15 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: M.Azarbayejani - A.Dakik
 // 
 // Create Date:    16:13:54 01/04/2024 
-// Design Name: 
+// Design Name: 	 
 // Module Name:    Top 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: Project top modules
 //
 // Dependencies: 
 //
@@ -55,7 +55,10 @@ module Top(
 	
 	assign led_dcm_locked = locked_wire;
 	
+	reg [11:0] temp;
+	wire flag;
 	
+
 	
 	//DONE
 	clk_generator clk_generator
@@ -88,7 +91,9 @@ module Top(
     .din(Fpga2Adc_data),        // OUT
     .cs(Fpga2Adc_Csn),          // OUT
     .ADD(ADDR),                 // IN
+//	 .ADD(3'b000),
     .ADC2SPI(Adc2Fpga_data),    // IN
+	 .start(locked_wire),			//IN
     .ADC2Sseg(ADC2Sseg)         // OUT
     );
 
@@ -97,6 +102,7 @@ module Top(
     .en(sseg_En),           		// OUT
     .svn_conf(sseg[7:1]),   		// OUT
     .DP(sseg[0]),           		// OUT
+	 .flag(flag),						// OUT
 	 .integer_data(integer_data),	// IN
 	 .float1_data(float1_data),	// IN
 	 .float2_data(float2_data),	// IN
@@ -114,9 +120,10 @@ module Top(
 	 
 	
 	//DONE
-	voltage_calculater(
+	voltage_calculater voltage_cal(
 	 .clk(Clk_12),						 // IN
 	 .ADC_data(ADC2Sseg),	       // IN
+	 .flag(flag),						 // IN
 	 .integer_data(integer_data),	 // OUT
 	 .float1_data(float1_data),	 // OUT
 	 .float2_data(float2_data)     // OUT

@@ -1,0 +1,37 @@
+
+# PlanAhead Generated physical constraints 
+
+NET "LED[0]" LOC = P132;
+NET "LED[1]" LOC = P131;
+NET "LED[2]" LOC = P127;
+NET "LED[3]" LOC = P126;
+NET "LED[4]" LOC = P124;
+NET "LED[5]" LOC = P123;
+NET "LED[6]" LOC = P121;
+NET "LED[7]" LOC = P120;
+NET "sseg[0]" LOC = P33;
+NET "sseg[1]" LOC = P47;
+NET "sseg[2]" LOC = P43;
+NET "sseg[3]" LOC = P34;
+NET "sseg[4]" LOC = P40;
+NET "sseg[5]" LOC = P35;
+NET "sseg[6]" LOC = P44;
+NET "sseg[7]" LOC = P30;
+NET "sseg_En[0]" LOC = P46;
+NET "sseg_En[1]" LOC = P45;
+NET "sseg_En[2]" LOC = P41;
+NET "sseg_En[3]" LOC = P32;
+NET "DipSwitch[0]" LOC = P51;
+NET "DipSwitch[1]" LOC = P48;
+NET "DipSwitch[2]" LOC = P55;
+NET "DipSwitch[3]" LOC = P56;
+NET "DipSwitch[4]" LOC = P57;
+NET "DipSwitch[5]" LOC = P58;
+NET "DipSwitch[6]" LOC = P66;
+NET "DipSwitch[7]" LOC = P59;
+NET "Adc2Fpga_data" LOC = P112;
+NET "Clk_pin" LOC = P50;
+NET "Fpga2Adc_Csn" LOC = P115;
+NET "Fpga2Adc_data" LOC = P111;
+NET "Fpga2Adc_sclk" LOC = P114;
+

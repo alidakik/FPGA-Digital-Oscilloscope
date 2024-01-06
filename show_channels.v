@@ -9,7 +9,7 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description:  A module designed to read the DIP switch values from the MEGAWING and display them on the board's LEDs.
 //
 // Dependencies: 
 //
