@@ -9,7 +9,9 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: A module that takes three values and dynamically showcases them on the 7-segment display. It updates its value every 0.5 seconds through a timer,
+//						seamlessly switching between the three 7-segment displays in a rapid and repetitive manner.
+
 //
 // Dependencies: 
 //
@@ -18,34 +20,39 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module S_segment_displayer(en,svn_conf,DP,intege_data,float1_data,float2_data,clk
+module S_segment_displayer(en,svn_conf,DP,integer_data,float1_data,float2_data,clk,flag
     );
 	
-output reg [3:0]en;
-output reg [6:0]svn_conf;
-output reg DP;
- 
-input wire clk;
+output reg [3:0]en;					// 7-seg enables
+output reg [6:0]svn_conf;			// 7-seg number configs
+output reg DP;							// Decimal point config
+output reg flag;						// a flag to tell the voltage calculater to update its value every 0.5 seconds
 
-input wire [3:0] integer_data;
-input wire [3:0] float1_data;
-input wire [3:0] float2_data;
+input wire clk;						// 12 mg clock
+input wire [3:0] integer_data;	// integer value of ADC to show on the first 7-seg
+input wire [3:0] float1_data;		// first float number after point to show on the second 7-seg
+input wire [3:0] float2_data;		// second float number after point to show on the third 7-seg
 
-reg [15:0] count=16'b0;
-reg [1:0] count2=3'b0;
+reg [15:0] count=16'b0;				// a counter to switch between the 7-seg
+reg [1:0] count2=3'b0;				// 7-seg number to update value
 reg [3:0] data_in=4'b0;
 
-reg [22:0] timer = 0;	// to display data every 0.5 seconds
-reg [3:0] integer_data_reg;
-reg [3:0] float1_data_reg;
-reg [3:0] float2_data_reg;
+reg [22:0] timer = 0;				// a timer to display data every 0.5 seconds
+reg [3:0] integer_data_reg;		// registering integer_data_reg
+reg [3:0] float1_data_reg;			// registering float1_data_reg
+reg [3:0] float2_data_reg;			// registering float2_data_reg
 
 
 
+
+// the block of code that is reponsable to switch between the 7-segs to update its values  
 always @ (posedge clk)
 begin
+	// wait some time to switch between 7-segs
 	if(count<16'hbb80)
 		count<=count+16'b1;
+	
+	//switch the 7-seg
 	else
 		begin
 		count<=16'b0;
@@ -57,40 +64,52 @@ begin
 	end
 
 
+//the block of code responsable to update 7-seg every 0.5 seconds so we can see the values easly
 always @(posedge clk)
 begin
-	if(timer<23'h5B8D80)
-		timer <= timer + 1;
+
+	// update the timer until it reaches 6000000 (that takes 0.5 seconds on 12 mg clock)
+	if(timer<23'h5B8D80) 
+		timer <= timer + 1; 
+		
+	// update 7-seg values
 	else
 		begin
 			integer_data_reg <= integer_data;
 			float1_data_reg <= float1_data;
 			float2_data_reg <= float2_data;
+			timer <= 0;
+			flag <=1;
 		end
 
 
 end
 
 	
-always @ (count2 or timer)
+// enabling and updating 7-seg individually every counter overflow
+always @ (count2)
 begin
- 	{en,data_in}<=(count2==2'b0)?{4'b1110,float2_data_reg}:(count2==2'b01)?{4'b1101,float1_data_reg}
-	:(count2==2'b10)?{4'b1011,integer_data_reg}:{4'b1111,4'b0};
-	end
+ 	{en,data_in}<=(count2==2'b0)?{4'b1110,integer_data_reg}:(count2==2'b01)?{4'b1101,float1_data_reg}
+	:(count2==2'b10)?{4'b1011,float2_data_reg}:{4'b1111,4'b0};
+end
 	
+
+
+// setting the decimal point when updating the first 7-seg	
 always @(count2)
 begin
-	if(count2==2'b10)
+	if(count2==2'b00)
 	begin
-		DP = 1;
+		DP = 0;
 	end
 	else
 	begin
-		DP = 0;
+		DP = 1;
 	end
 end
 
 
+// setting 7-seg cong based on the integer that we want to show
 always @ ( data_in )
 begin
 	case ( data_in )
